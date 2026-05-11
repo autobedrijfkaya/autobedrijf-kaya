@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Autobedrijf Kaya — Uw auto, onze zorg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --ink-2:#1a1a1a;
+    --text:#1a1a1a;
+    --muted:#6b6b6b;
+    --line:#e6e6e6;
+    --line-2:#dcdcdc;
+    --bg:#ffffff;
+    --bg-soft:#f4f4f4;
+    --bg-soft-2:#ececec;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.03);
+    --shadow:0 8px 24px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Plus Jakarta Sans','Manrope',system-ui,-apple-system,sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+  .container{max-width:1200px;margin:0 auto;padding:0 32px}
+
+  /* ───────── Header ───────── */
+  .site-header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    display:flex;align-items:center;gap:32px;
+    padding:14px 0;
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{
+    height:64px;width:auto;display:block;
+  }
+
+  nav.primary{
+    margin-left:auto;
+    display:flex;align-items:center;gap:34px;
+  }
+  nav.primary a{
+    font-size:14px;font-weight:600;letter-spacing:.04em;
+    color:var(--text);text-transform:uppercase;
+    padding:6px 0;position:relative;
+  }
+  nav.primary a.active{color:var(--ink)}
+  nav.primary a.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;
+    background:var(--ink);border-radius:2px;
+  }
+  nav.primary a:hover{color:var(--ink)}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:6px;
+    font-weight:700;font-size:14px;letter-spacing:.04em;
+    text-transform:uppercase;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .btn-primary{
+    background:var(--ink);color:#fff;
+  }
+  .btn-primary:hover{background:#000;transform:translateY(-1px)}
+  .btn-ghost{
+    background:#fff;color:var(--ink);
+    border:1.5px solid var(--ink);
+  }
+  .btn-ghost:hover{background:var(--ink);color:#fff}
+  .btn-outline-white{
+    background:transparent;color:#fff;border:1.5px solid #fff;
+  }
+  .btn-outline-white:hover{background:#fff;color:var(--ink)}
+  .btn .arrow{
+    width:22px;height:22px;border-radius:999px;
+    background:rgba(255,255,255,.16);
+    display:grid;place-items:center;
+  }
+  .btn-ghost .arrow{background:rgba(0,0,0,.08)}
+
+  /* ───────── Hero (cinematic) ───────── */
+  .hero{
+    position:relative;
+    background:#0a0a0a;
+    overflow:hidden;
+    color:#fff;
+    isolation:isolate;
+  }
+  .hero-stage{
+    position:relative;
+    height:min(86vh, 760px);
+    min-height:680px;
+    width:100%;
+    overflow:hidden;
+  }
+
+  /* Sky gradient + soft vignette */
+  .hero-sky{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 60% at 50% 100%, rgba(255,255,255,.08), transparent 60%),
+      linear-gradient(180deg, #050505 0%, #111 55%, #1a1a1a 100%);
+    z-index:0;
+  }
+  .hero-vignette{
+    position:absolute;inset:0;z-index:5;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% 50%, transparent 50%, rgba(0,0,0,.55) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.35), transparent 25%, transparent 70%, rgba(0,0,0,.65));
+  }
+
+  /* Real footage video layer */
+  .hero-video{
+    position:absolute;inset:0;z-index:1;
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(100%) contrast(1.05) brightness(.4);
+  }
+  .hero-video-overlay{
+    position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:
+      radial-gradient(120% 70% at 50% 50%, transparent 30%, rgba(0,0,0,.55) 100%),
+      linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 30%, rgba(0,0,0,.25) 65%, rgba(0,0,0,.85) 100%);
+  }
+
+  /* Distant city silhouette (parallax slow) */
+  .hero-city{
+    position:absolute;left:0;right:0;bottom:34%;
+    height:120px;z-index:1;opacity:.25;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 120' preserveAspectRatio='none'><path fill='%23ffffff' d='M0 120 L0 70 L40 70 L40 50 L70 50 L70 30 L100 30 L100 60 L140 60 L140 40 L170 40 L170 65 L210 65 L210 45 L240 45 L240 75 L280 75 L280 55 L310 55 L310 35 L340 35 L340 70 L380 70 L380 50 L410 50 L410 80 L450 80 L450 60 L490 60 L490 40 L520 40 L520 75 L560 75 L560 55 L600 55 L600 30 L630 30 L630 65 L670 65 L670 45 L710 45 L710 80 L750 80 L750 60 L790 60 L790 40 L820 40 L820 75 L860 75 L860 55 L900 55 L900 30 L930 30 L930 65 L970 65 L970 45 L1010 45 L1010 80 L1050 80 L1050 60 L1090 60 L1090 40 L1120 40 L1120 75 L1160 75 L1160 55 L1200 55 L1200 35 L1230 35 L1230 70 L1270 70 L1270 50 L1310 50 L1310 80 L1350 80 L1350 60 L1390 60 L1390 40 L1420 40 L1420 75 L1460 75 L1460 55 L1500 55 L1500 35 L1540 35 L1540 70 L1600 70 L1600 120 Z'/></svg>") repeat-x;
+    background-size:auto 100%;
+    animation: cityPan 80s linear infinite;
+    filter:blur(.5px);
+  }
+  @keyframes cityPan{ from{background-position:0 0} to{background-position:-1600px 0} }
+
+  /* Road */
+  .hero-road{
+    position:absolute;left:0;right:0;bottom:0;
+    height:34%;
+    z-index:2;
+    background:
+      linear-gradient(180deg, #161616 0%, #0a0a0a 100%);
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .hero-road::before{
+    /* Road horizon line glow */
+    content:"";position:absolute;left:0;right:0;top:-1px;height:60px;
+    background:linear-gradient(180deg, rgba(255,255,255,.06), transparent);
+    pointer-events:none;
+  }
+  .lane-lines{
+    position:absolute;left:0;right:0;top:50%;
+    height:4px;
+    background:repeating-linear-gradient(90deg, #fff 0 60px, transparent 60px 130px);
+    opacity:.55;
+    animation: laneScroll 1.2s linear infinite;
+  }
+  .lane-lines.lane-2{top:78%;height:3px;opacity:.4;animation-duration:.9s}
+  .lane-lines.lane-3{top:30%;height:2px;opacity:.25;animation-duration:1.8s}
+  @keyframes laneScroll{ from{background-position:0 0} to{background-position:-190px 0} }
+
+  /* Cars driving past */
+  .car{
+    position:absolute;
+    z-index:3;
+    bottom: 6%;
+    left:-300px;
+    will-change: transform;
+    filter: drop-shadow(0 12px 16px rgba(0,0,0,.6));
+  }
+  .car svg{display:block}
+  .car.run-1{ animation: drive1 9s linear infinite; animation-delay: 0s; bottom:5%; }
+  .car.run-2{ animation: drive2 11s linear infinite; animation-delay: 3.2s; bottom:14%; transform-origin:center;}
+  .car.run-3{ animation: drive3 13s linear infinite; animation-delay: 6.5s; bottom:22%; }
+  @keyframes drive1{ 0%{transform:translateX(0) scale(1)} 100%{transform:translateX(calc(100vw + 400px)) scale(1)} }
+  @keyframes drive2{ 0%{transform:translateX(0) scale(.85)} 100%{transform:translateX(calc(100vw + 400px)) scale(.85)} }
+  @keyframes drive3{ 0%{transform:translateX(0) scale(.7)} 100%{transform:translateX(calc(100vw + 400px)) scale(.7)} }
+
+  /* Headlight streaks (light trails for cars going opposite direction) */
+  .streak{
+    position:absolute;
+    z-index:2;
+    height:2px;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.85), transparent);
+    border-radius:99px;
+    filter:blur(.5px);
+    animation: streak 3.4s linear infinite;
+    opacity:0;
+  }
+  .streak.s1{ top:62%; width:240px; animation-delay:.2s }
+  .streak.s2{ top:70%; width:180px; animation-delay:1.1s; height:1.5px }
+  .streak.s3{ top:78%; width:300px; animation-delay:2.3s }
+  .streak.s4{ top:55%; width:160px; animation-delay:.7s; height:1.5px }
+  .streak.s5{ top:84%; width:220px; animation-delay:1.8s }
+  @keyframes streak{
+    0%{ transform:translateX(110vw); opacity:0 }
+    10%{ opacity:.9 }
+    90%{ opacity:.9 }
+    100%{ transform:translateX(-300px); opacity:0 }
+  }
+
+  /* Floating particles / dust */
+  .dust{
+    position:absolute;inset:0;z-index:2;pointer-events:none;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.5), transparent 60%),
+      radial-gradient(1px 1px at 70% 50%, rgba(255,255,255,.35), transparent 60%),
+      radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.25), transparent 60%),
+      radial-gradient(1px 1px at 85% 25%, rgba(255,255,255,.4), transparent 60%);
+    animation: dustFloat 14s ease-in-out infinite alternate;
+    opacity:.6;
+  }
+  @keyframes dustFloat{ from{transform:translate(0,0)} to{transform:translate(-12px,-8px)} }
+
+  /* Hero content overlay */
+  .hero-content{
+    position:absolute;inset:0;z-index:6;
+    display:grid; place-items:center;
+    text-align:center;
+    padding:0 24px;
+  }
+  .hero-inner{
+    max-width:880px;
+  }
+  .hero-logo{
+    width:min(360px, 62vw);
+    margin:0 auto 14px;
+    filter: invert(1) drop-shadow(0 8px 30px rgba(255,255,255,.15));
+    opacity:0;
+    animation: logoIn 1.2s cubic-bezier(.2,.7,.2,1) .4s forwards;
+  }
+  @keyframes logoIn{
+    0%{ opacity:0; transform: translateY(20px) scale(.94); filter:invert(1) blur(8px) drop-shadow(0 8px 30px rgba(255,255,255,.0)); }
+    60%{ opacity:1; }
+    100%{ opacity:1; transform: translateY(0) scale(1); filter:invert(1) blur(0) drop-shadow(0 8px 30px rgba(255,255,255,.18)); }
+  }
+
+  .hero-tagline{
+    font-size:13px;font-weight:600;letter-spacing:.42em;
+    text-transform:uppercase;color:rgba(255,255,255,.85);
+    margin:0 0 24px;
+    display:inline-flex;align-items:center;gap:14px;
+    opacity:0; animation: fadeUp 1s ease .9s forwards;
+  }
+  .hero-tagline::before, .hero-tagline::after{
+    content:"";width:36px;height:1px;background:rgba(255,255,255,.55);display:inline-block;
+  }
+  .hero-copy h1{
+    display:none; /* replaced by logo lockup */
+  }
+  .hero-sub{
+    color:rgba(255,255,255,.78);
+    font-size:16px;line-height:1.55;
+    max-width:520px;margin:0 auto 26px;
+    opacity:0; animation: fadeUp 1s ease 1.1s forwards;
+  }
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+    opacity:0; animation: fadeUp 1s ease 1.3s forwards;
+  }
+  .hero-cta .btn-primary{ background:#fff; color:#0a0a0a }
+  .hero-cta .btn-primary:hover{ background:#eee }
+  .hero-cta .btn-ghost{ background:transparent; color:#fff; border-color:#fff }
+  .hero-cta .btn-ghost:hover{ background:#fff; color:#0a0a0a }
+
+  @keyframes fadeUp{
+    0%{ opacity:0; transform:translateY(14px) }
+    100%{ opacity:1; transform:translateY(0) }
+  }
+
+  /* Scroll cue */
+  .scroll-cue{
+    position:absolute;left:50%;bottom:14px;z-index:7;
+    transform:translateX(-50%);
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:rgba(255,255,255,.55);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scroll-cue .dot{
+    width:1px;height:38px;background:linear-gradient(180deg, rgba(255,255,255,.6), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse{
+    0%,100%{ opacity:.4; transform:scaleY(.7) }
+    50%{ opacity:1; transform:scaleY(1) }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .lane-lines, .car, .streak, .dust, .hero-city, .hero-logo, .hero-tagline, .hero-sub, .hero-cta, .scroll-cue .dot{ animation:none !important }
+    .hero-logo{ opacity:1 } .hero-tagline,.hero-sub,.hero-cta{ opacity:1 }
+  }
+
+  /* ───────── Feature row ───────── */
+  .features{
+    background:#fff;
+    padding:56px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .features-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:32px;
+  }
+  .feature{display:flex;gap:18px;align-items:flex-start}
+  .feature-icon{
+    flex:0 0 auto;
+    width:64px;height:64px;border-radius:999px;
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    display:grid;place-items:center;
+  }
+  .feature h4{
+    margin:6px 0 6px;
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);font-weight:700;
+  }
+  .feature p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+
+  /* ───────── Aanbod ───────── */
+  .aanbod{padding:72px 0 80px;background:var(--bg-soft)}
+  .section-head{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    margin-bottom:32px;
+  }
+  .section-eyebrow{
+    color:var(--muted);
+    font-size:13px;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;margin-bottom:8px;
+  }
+  .section-title{
+    font-family:'Manrope',sans-serif;
+    font-size:36px;font-weight:800;color:var(--ink);
+    margin:0;letter-spacing:-.01em;
+  }
+  .cards{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+  }
+  .card{
+    background:#fff;border-radius:8px;overflow:hidden;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--line);
+    transition:transform .2s ease, box-shadow .2s ease;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .card-img{
+    aspect-ratio: 4/3;
+    background:#1a1a1a;
+    position:relative;overflow:hidden;
+  }
+  .card-img img{width:100%;height:100%;object-fit:cover}
+  .card-body{padding:18px 20px 4px}
+  .card h3{
+    font-family:'Manrope',sans-serif;
+    font-size:18px;font-weight:700;color:var(--ink);
+    margin:0 0 4px;
+  }
+  .card .sub{font-size:13px;color:var(--muted);margin:0 0 14px}
+  .specs{
+    display:flex;flex-wrap:wrap;gap:14px 18px;
+    font-size:12.5px;color:var(--text);
+    padding-bottom:14px;border-bottom:1px solid var(--line);
+  }
+  .specs span{display:inline-flex;align-items:center;gap:6px}
+  .specs svg{color:var(--muted)}
+  .card-foot{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 20px 18px;
+  }
+  .price{font-size:22px;font-weight:800;color:var(--ink);font-family:'Manrope',sans-serif}
+  .chev{
+    width:30px;height:30px;border-radius:999px;
+    background:var(--bg-soft);color:var(--ink);
+    display:grid;place-items:center;
+    transition:background .15s ease, color .15s ease;
+  }
+  .card:hover .chev{background:var(--ink);color:#fff}
+
+  /* ───────── Over ons ───────── */
+  .over{padding:72px 0 84px;background:#fff}
+  .over-grid{
+    display:grid;grid-template-columns:1fr 1.2fr;gap:36px;
+    align-items:stretch;
+  }
+  .over-copy{
+    background:var(--bg-soft);
+    padding:44px 40px;
+    border-radius:8px;
+  }
+  .over-copy h2{
+    font-family:'Manrope',sans-serif;
+    font-size:32px;font-weight:800;color:var(--ink);
+    margin:0 0 16px;letter-spacing:-.01em;
+  }
+  .over-copy p{
+    color:var(--muted);font-size:15px;line-height:1.7;margin:0 0 24px;
+  }
+  .ticks{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:12px}
+  .ticks li{
+    display:flex;align-items:center;gap:12px;
+    font-size:14.5px;color:var(--text);font-weight:500;
+  }
+  .ticks .tick{
+    flex:0 0 auto;
+    width:22px;height:22px;border-radius:999px;
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    display:grid;place-items:center;
+  }
+  .over-image{
+    border-radius:8px;overflow:hidden;
+    background:#0a0a0a;
+    min-height:420px;
+    box-shadow:var(--shadow);
+  }
+  .over-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%)}
+
+  /* ───────── Stats ───────── */
+  .stats{background:var(--ink);color:#fff;padding:36px 0}
+  .stats-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+    align-items:center;
+  }
+  .stat{display:flex;align-items:center;gap:16px}
+  .stat-icon{
+    width:48px;height:48px;border-radius:999px;
+    background:rgba(255,255,255,.08);color:#fff;
+    border:1.5px solid rgba(255,255,255,.4);
+    display:grid;place-items:center;flex:0 0 auto;
+  }
+  .stat-num{
+    font-family:'Manrope',sans-serif;
+    font-size:28px;font-weight:800;color:#fff;
+    line-height:1;
+  }
+  .stat-label{font-size:13.5px;color:rgba(255,255,255,.7);margin-top:4px}
+
+  /* ───────── Footer ───────── */
+  footer{background:#fff;padding:60px 0 0}
+  .foot-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1.2fr;
+    gap:40px;
+  }
+  .foot-brand .brand{margin-bottom:18px}
+  .foot-brand .brand img{height:72px}
+  .foot-brand p{
+    color:var(--muted);font-size:14px;line-height:1.6;
+    max-width:280px;margin:0 0 18px;
+  }
+  .socials{display:flex;gap:10px}
+  .socials a{
+    width:38px;height:38px;border-radius:999px;
+    border:1.5px solid var(--ink);color:var(--ink);
+    display:grid;place-items:center;
+    transition:background .15s ease, color .15s ease;
+  }
+  .socials a:hover{background:var(--ink);color:#fff}
+  .foot-col h5{
+    font-size:13px;letter-spacing:.18em;color:var(--ink);
+    text-transform:uppercase;font-weight:700;margin:6px 0 18px;
+  }
+  .foot-col ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+  .foot-col li a{font-size:14px;color:var(--muted)}
+  .foot-col li a:hover{color:var(--ink)}
+  .foot-contact .item{
+    display:flex;align-items:flex-start;gap:10px;
+    font-size:14px;color:var(--muted);margin-bottom:10px;
+  }
+  .foot-contact .item svg{color:var(--ink);flex:0 0 auto;margin-top:2px}
+  .copy{
+    margin-top:48px;
+    background:var(--ink);color:rgba(255,255,255,.7);
+    text-align:left;padding:18px 0;font-size:13px;
+  }
+  .copy .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  /* ───────── Responsive ───────── */
+  @media (max-width: 1000px){
+    nav.primary{display:none}
+    .hero-stage{min-height:640px}
+    .scroll-cue{display:none}
+    .header-inner .btn-primary{white-space:nowrap;padding:12px 16px}
+    .header-inner .btn-primary .cta-label{display:none}
+    .header-inner .btn-primary .cta-label::after{content:"Contact";display:inline}
+    .header-inner .btn-primary .cta-label{display:inline;font-size:0}
+    .header-inner .btn-primary .cta-label::after{font-size:14px}
+    .header-inner .btn-primary span:not(.arrow){display:none}
+    .features-grid{grid-template-columns:repeat(2,1fr);gap:28px}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .over-grid{grid-template-columns:1fr}
+    .over-image{min-height:280px}
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+  }
+  @media (max-width: 560px){
+    .container{padding:0 20px}
+    .hero-copy h1{font-size:48px}
+    .features-grid{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+    .section-head{flex-direction:column;align-items:flex-start}
+    .brand img{height:52px}
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js" defer></script>
+</head>
+<body>
+
+<!-- ───────── HEADER ───────── -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#" aria-label="Autobedrijf Kaya home">
+      <img src="assets/logo-cropped.png" alt="Autobedrijf Kaya — Uw auto, onze zorg" />
+    </a>
+
+    <nav class="primary" aria-label="Hoofdnavigatie">
+      <a href="#" class="active">Home</a>
+      <a href="aanbod.html">Aanbod</a>
+      <a href="#diensten">Diensten</a>
+      <a href="#over">Over ons</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <button type="button" data-contact-popup class="btn btn-primary" style="white-space:nowrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+      <span class="cta-label">Contact opnemen</span>
+    </button>
+  </div>
+</header>
+
+<!-- ───────── HERO (cinematic) ───────── -->
+<section class="hero">
+  <div class="hero-stage">
+    <div class="hero-sky"></div>
+    <img class="hero-video" src="assets/hero-vestiging.jpg" alt="Autobedrijf Kaya — vestiging" />
+    <div class="hero-video-overlay"></div>
+    <div class="dust"></div>
+
+    <!-- Light streaks accents -->
+    <span class="streak s1"></span>
+    <span class="streak s3"></span>
+    <span class="streak s5"></span>
+
+    <!-- Decorative silhouettes hidden when video plays -->
+    <div class="car run-3" aria-hidden="true" style="display:none">
+      <!-- Sedan small (back layer) -->
+      <svg width="200" height="60" viewBox="0 0 200 60" fill="#000">
+        <path d="M10 46 C 10 38 16 36 26 36 L 50 36 L 64 22 C 70 16 78 14 88 14 L 132 14 C 142 14 150 16 156 22 L 170 36 L 182 36 C 190 36 194 40 194 46 L 194 50 L 10 50 Z"/>
+        <rect x="68" y="20" width="30" height="14" rx="2" fill="#1c1c1c"/>
+        <rect x="102" y="20" width="30" height="14" rx="2" fill="#1c1c1c"/>
+        <circle cx="50" cy="50" r="7" fill="#000"/>
+        <circle cx="50" cy="50" r="3" fill="#333"/>
+        <circle cx="150" cy="50" r="7" fill="#000"/>
+        <circle cx="150" cy="50" r="3" fill="#333"/>
+        <rect x="186" y="38" width="6" height="3" fill="#fff" opacity=".9"/>
+      </svg>
+    </div>
+
+    <div class="car run-2" aria-hidden="true">
+      <!-- SUV mid -->
+      <svg width="240" height="78" viewBox="0 0 240 78" fill="#000">
+        <path d="M8 60 C 8 50 14 48 24 48 L 50 48 L 66 22 C 72 14 82 12 94 12 L 158 12 C 170 12 180 16 186 24 L 202 48 L 222 48 C 232 48 236 52 236 60 L 236 64 L 8 64 Z"/>
+        <rect x="72" y="18" width="38" height="22" rx="3" fill="#1f1f1f"/>
+        <rect x="114" y="18" width="38" height="22" rx="3" fill="#1f1f1f"/>
+        <rect x="156" y="22" width="30" height="18" rx="3" fill="#1f1f1f"/>
+        <circle cx="58" cy="64" r="10" fill="#000"/>
+        <circle cx="58" cy="64" r="4" fill="#444"/>
+        <circle cx="184" cy="64" r="10" fill="#000"/>
+        <circle cx="184" cy="64" r="4" fill="#444"/>
+        <rect x="228" y="50" width="7" height="4" fill="#fff" opacity=".9"/>
+      </svg>
+    </div>
+
+    <div class="car run-1" aria-hidden="true">
+      <!-- Sedan large (foreground) -->
+      <svg width="320" height="100" viewBox="0 0 320 100" fill="#000">
+        <path d="M10 78 C 10 64 18 60 32 60 L 64 60 L 86 28 C 94 18 106 14 122 14 L 210 14 C 226 14 240 18 248 28 L 270 60 L 296 60 C 308 60 314 66 314 78 L 314 84 L 10 84 Z"/>
+        <rect x="94" y="22" width="50" height="30" rx="4" fill="#202020"/>
+        <rect x="150" y="22" width="50" height="30" rx="4" fill="#202020"/>
+        <rect x="206" y="28" width="42" height="24" rx="4" fill="#202020"/>
+        <!-- chrome strip -->
+        <rect x="40" y="60" width="260" height="2" fill="#444"/>
+        <!-- wheels -->
+        <circle cx="76" cy="84" r="14" fill="#000"/>
+        <circle cx="76" cy="84" r="6" fill="#3a3a3a"/>
+        <circle cx="76" cy="84" r="2" fill="#fff" opacity=".5"/>
+        <circle cx="248" cy="84" r="14" fill="#000"/>
+        <circle cx="248" cy="84" r="6" fill="#3a3a3a"/>
+        <circle cx="248" cy="84" r="2" fill="#fff" opacity=".5"/>
+        <!-- headlight glow -->
+        <rect x="304" y="64" width="10" height="5" rx="1" fill="#fff"/>
+        <rect x="6" y="68" width="6" height="3" rx="1" fill="#ff5252" opacity=".8"/>
+      </svg>
+    </div>
+
+    <div class="hero-vignette"></div>
+
+    <!-- Content overlay -->
+    <div class="hero-content">
+      <div class="hero-inner">
+        <img class="hero-logo" src="assets/logo-cropped.png" alt="Autobedrijf Kaya" />
+        <div class="hero-tagline">Uw auto, onze zorg</div>
+        <p class="hero-sub">Betrouwbare occasions, uitstekende service en persoonlijk advies. Daar staan wij voor.</p>
+        <div class="hero-cta">
+          <a href="aanbod.html" class="btn btn-primary">
+            Bekijk ons aanbod
+            <span class="arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+          </a>
+          <a href="#over" class="btn btn-ghost">Over ons</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll</span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FEATURES ───────── -->
+<section class="features">
+  <div class="container features-grid">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14"/><path d="M5 17l1.5-5h11L19 17"/><circle cx="7.5" cy="17" r="1.6"/><circle cx="16.5" cy="17" r="1.6"/></svg>
+      </div>
+      <div>
+        <h4>Ruim aanbod</h4>
+        <p>Een zorgvuldig geselecteerd aanbod van quality occasions.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+      <div>
+        <h4>Betrouwbaar</h4>
+        <p>Eerlijk advies en transparante service, daar kunt u op rekenen.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-3.5 4-5.5 7-5.5s6 2 7 5.5"/></svg>
+      </div>
+      <div>
+        <h4>Persoonlijk</h4>
+        <p>Persoonlijke aandacht en begeleiding van begin tot eind.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-2.4 2.4-1.4-1.4 2.4-2.4Z"/></svg>
+      </div>
+      <div>
+        <h4>Service &amp; Onderhoud</h4>
+        <p>Ook voor onderhoud en reparaties bent u bij ons aan het juiste adres.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── AANBOD ───────── -->
+<section class="aanbod" id="aanbod">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">Ons aanbod</div>
+        <h2 class="section-title">Quality occasions</h2>
+      </div>
+      <a href="aanbod.html" class="btn btn-primary">
+        Bekijk alle occasions
+        <span class="arrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="cards" id="cards-grid">
+      <a class="card" href="auto.html?id=demo-1">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80" alt="Audi A3 Sportback"/>
+        </div>
+        <div class="card-body">
+          <h3>Audi A3</h3>
+          <p class="sub">Sportback 1.5 TFSI Sport</p>
+          <div class="specs">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2020</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l4-4h6l4 4v13"/><path d="M9 21v-6h6v6"/></svg>Benzine</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>78.000 km</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="price">€ 21.950,-</span>
+          <span class="chev">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a class="card" href="auto.html?id=demo-2">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?auto=format&fit=crop&w=900&q=80" alt="Mercedes-Benz C-Klasse"/>
+        </div>
+        <div class="card-body">
+          <h3>Mercedes-Benz C-Klasse</h3>
+          <p class="sub">C220d AMG Line</p>
+          <div class="specs">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2019</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l4-4h6l4 4v13"/><path d="M9 21v-6h6v6"/></svg>Diesel</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>88.000 km</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="price">€ 27.950,-</span>
+          <span class="chev">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a class="card" href="auto.html?id=demo-3">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80" alt="BMW 3 Serie"/>
+        </div>
+        <div class="card-body">
+          <h3>BMW 3 Serie</h3>
+          <p class="sub">320i M Sport</p>
+          <div class="specs">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2020</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l4-4h6l4 4v13"/><path d="M9 21v-6h6v6"/></svg>Benzine</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>56.000 km</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="price">€ 28.950,-</span>
+          <span class="chev">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a class="card" href="auto.html?id=demo-4">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=900&q=80" alt="Volkswagen Golf"/>
+        </div>
+        <div class="card-body">
+          <h3>Volkswagen Golf</h3>
+          <p class="sub">1.5 TSI Style</p>
+          <div class="specs">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2021</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l4-4h6l4 4v13"/><path d="M9 21v-6h6v6"/></svg>Benzine</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>45.000 km</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="price">€ 19.950,-</span>
+          <span class="chev">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── OVER ONS ───────── -->
+<section class="over" id="over">
+  <div class="container over-grid">
+    <div class="over-copy">
+      <div class="section-eyebrow">Over ons</div>
+      <h2>Autobedrijf Kaya</h2>
+      <p>Autobedrijf Kaya is een jong en dynamisch autobedrijf gespecialiseerd in de in- en verkoop van kwalitatieve occasions. Klanttevredenheid, betrouwbaarheid en eerlijkheid staan bij ons altijd voorop.</p>
+      <ul class="ticks">
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Jonge &amp; kwalitatieve occasions</li>
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Transparant &amp; eerlijk advies</li>
+        <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Persoonlijke service</li>
+      </ul>
+      <a href="#" class="btn btn-primary">
+        Meer over ons
+        <span class="arrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </a>
+    </div>
+    <div class="over-image">
+      <img src="assets/over-ons.jpg" alt="Autobedrijf Kaya — vestiging"/>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── STATS ───────── -->
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat">
+      <div class="stat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c.7-3 3.2-5 6-5s5.3 2 6 5"/><circle cx="17" cy="8" r="2.5"/><path d="M15.5 14c2 .3 3.7 1.7 4.5 4"/></svg>
+      </div>
+      <div>
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Tevreden klanten</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a3 3 0 0 0 3 3M17 6h3a3 3 0 0 1-3 3"/><path d="M9 14h6v3H9z"/><path d="M8 20h8"/></svg>
+      </div>
+      <div>
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Jaar ervaring</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/></svg>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Betrouwbaar</div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2-3 4 6 2-3 2 2h6"/></svg>
+      </div>
+      <div>
+        <div class="stat-num">Persoonlijke</div>
+        <div class="stat-label">aanpak</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FOOTER ───────── -->
+<footer id="contact">
+  <div class="container foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="#">
+        <img src="assets/logo-cropped.png" alt="Autobedrijf Kaya" />
+      </a>
+      <p>Betrouwbare occasions, uitstekende service en persoonlijk advies. Daar staan wij voor.</p>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4V9Z"/></svg></a>
+        <a href="#" aria-label="Whatsapp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.5A8.5 8.5 0 1 1 7.5 19.4L3 21Z"/><path d="M9 10c.4 1.6 1.4 2.9 3 3.5.6.2 1.4.4 2-.2.3-.3.5-.7.5-1.2-1-.5-1.7-.8-2.5-.5-.4-.4-.8-.9-1-1.5-.3-.8-.1-1.4.4-1.9-.4-.6-.8-1.2-1.5-1.5-.5 0-1 .2-1.4.5-.6.6-.8 1.4-.5 2.3Z"/></svg></a>
+      </div>
+    </div>
+
+    <div class="foot-col">
+      <h5>Snelle links</h5>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="aanbod.html">Aanbod</a></li>
+        <li><a href="#">Diensten</a></li>
+        <li><a href="#over">Over ons</a></li>
+        <li><a href="#">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="foot-col">
+      <h5>Diensten</h5>
+      <ul>
+        <li><a href="#">In- en verkoop</a></li>
+        <li><a href="#">Onderhoud</a></li>
+        <li><a href="#">Reparatie</a></li>
+        <li><a href="#">APK</a></li>
+        <li><a href="#">Bandenservice</a></li>
+      </ul>
+    </div>
+
+    <div class="foot-col foot-contact">
+      <h5>Contact</h5>
+      <div class="item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <div>Gildeweg 27B<br/>4383 NJ Vlissingen</div>
+      </div>
+      <div class="item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+        <div>06 81 00 43 51</div>
+      </div>
+      <div class="item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        <div>info@autobedrijfkaya.nl</div>
+      </div>
+      <div class="item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        <div>www.autobedrijfkaya.nl</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="copy">
+    <div class="container">
+      <div>© 2026 Autobedrijf Kaya. Alle rechten voorbehouden.</div>
+      <div><a href="admin.html" style="color:rgba(255,255,255,.55)">Admin</a> · Uw auto, onze zorg.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ───────── Render cars from Supabase ───────── */
+(async function(){
+  const grid = document.getElementById('cards-grid');
+  if(!grid) return;
+
+  while(!window.kayaApi){ await new Promise(r => setTimeout(r, 30)); }
+
+  async function loadCars(){
+    return await window.kayaApi.listCars();
+  }
+  function fmtPrice(n){ return '€ ' + Number(n||0).toLocaleString('nl-NL') + ',-'; }
+  function fmtKm(n){ return Number(n||0).toLocaleString('nl-NL') + ' km'; }
+  function esc(s){
+    return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  const calIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>`;
+  const fuelIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V8l4-4h6l4 4v13"/><path d="M9 21v-6h6v6"/></svg>`;
+  const kmIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+  const chevIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+
+  function cardHtml(c){
+    const title = esc((c.merk || '') + ' ' + (c.model || '')).trim();
+    return `
+      <a class="card" href="auto.html?id=${encodeURIComponent(c.id)}">
+        <div class="card-img">
+          ${(() => { const cv = (c.images && c.images[0]) || c.image; return cv ? `<img src="${cv}" alt="${esc(title)}"/>` : ''; })()}
+        </div>
+        <div class="card-body">
+          <h3>${title}</h3>
+          <p class="sub">${esc(c.uitvoering || '')}</p>
+          <div class="specs">
+            <span>${calIcon}${esc(c.jaar || '')}</span>
+            <span>${fuelIcon}${esc(c.brandstof || '')}</span>
+            <span>${kmIcon}${fmtKm(c.km)}</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="price">${fmtPrice(c.prijs)}</span>
+          <span class="chev">${chevIcon}</span>
+        </div>
+      </a>
+    `;
+  }
+
+  async function render(){
+    const cars = await loadCars();
+    if(cars.length === 0) return; // keep static demo cards
+    grid.innerHTML = cars.slice(0, 4).map(cardHtml).join('');
+  }
+
+  render();
+})();
+</script>
+</script>
+
+
+<!-- ───────── Contact popup ───────── -->
+<div id="contactModal" class="cm-overlay" hidden>
+  <div class="cm-card" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <button type="button" class="cm-close" data-cm-close aria-label="Sluiten">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="cm-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+    </div>
+    <div class="cm-eyebrow">Direct contact</div>
+    <h3 id="cmTitle">Bel ons direct</h3>
+    <a class="cm-phone" href="tel:+31681004351">06 81 00 43 51</a>
+    <p class="cm-sub">We helpen u graag verder met al uw vragen over ons aanbod en onze diensten.</p>
+    <div class="cm-actions">
+      <a class="btn btn-primary" href="tel:+31681004351">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+        Bel nu
+      </a>
+      <a class="btn btn-ghost" href="https://wa.me/31681004351" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.5A8.5 8.5 0 1 1 7.5 19.4L3 21Z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+<style>
+  .cm-overlay{
+    position:fixed;inset:0;z-index:1000;
+    background:rgba(10,10,10,.62);
+    backdrop-filter:blur(4px);
+    display:grid;place-items:center;
+    padding:24px;
+    animation:cmFade .18s ease-out;
+  }
+  .cm-overlay[hidden]{display:none}
+  @keyframes cmFade{ from{opacity:0} to{opacity:1} }
+  .cm-card{
+    background:#fff;border-radius:12px;
+    max-width:420px;width:100%;
+    padding:36px 32px 28px;
+    text-align:center;position:relative;
+    box-shadow:0 24px 60px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.1);
+    animation:cmPop .22s cubic-bezier(.2,.7,.2,1);
+  }
+  @keyframes cmPop{ from{opacity:0;transform:translateY(12px) scale(.96)} to{opacity:1;transform:none} }
+  .cm-close{
+    position:absolute;top:14px;right:14px;
+    width:34px;height:34px;border-radius:99px;
+    background:#f4f4f4;color:#0a0a0a;
+    display:grid;place-items:center;
+    transition:background .15s ease, color .15s ease;
+  }
+  .cm-close:hover{background:#0a0a0a;color:#fff}
+  .cm-icon{
+    width:60px;height:60px;border-radius:99px;
+    background:#f4f4f4;color:#0a0a0a;
+    display:grid;place-items:center;
+    margin:0 auto 14px;
+  }
+  .cm-eyebrow{
+    font-size:11.5px;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;color:#6b6b6b;margin-bottom:6px;
+  }
+  .cm-card h3{
+    font-family:'Manrope',sans-serif;
+    font-size:22px;font-weight:800;color:#0a0a0a;
+    margin:0 0 14px;letter-spacing:-.01em;
+  }
+  .cm-phone{
+    display:inline-block;
+    font-family:'Manrope',sans-serif;
+    font-size:32px;font-weight:800;color:#0a0a0a;
+    letter-spacing:-.01em;
+    padding:8px 18px;border-radius:8px;
+    background:#f4f4f4;
+    transition:background .15s ease;
+    margin-bottom:14px;
+  }
+  .cm-phone:hover{background:#ececec}
+  .cm-sub{
+    color:#6b6b6b;font-size:13.5px;line-height:1.55;
+    margin:0 0 22px;
+  }
+  .cm-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .cm-actions .btn{padding:12px 18px;font-size:13px}
+  @media (max-width:480px){
+    .cm-card{padding:30px 22px 24px}
+    .cm-phone{font-size:26px}
+    .cm-card h3{font-size:19px}
+  }
+</style>
+<script>
+(function(){
+  const modal = document.getElementById('contactModal');
+  if(!modal) return;
+  function open(){ modal.hidden = false; document.body.style.overflow='hidden'; }
+  function close(){ modal.hidden = true; document.body.style.overflow=''; }
+  document.addEventListener('click', (e) => {
+    if(e.target.closest('[data-contact-popup]')){ e.preventDefault(); open(); return; }
+    if(e.target === modal || e.target.closest('[data-cm-close]')){ close(); }
+  });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && !modal.hidden) close(); });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — Autobedrijf Kaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --text:#1a1a1a;
+    --muted:#6b6b6b;
+    --line:#e6e6e6;
+    --line-2:#dcdcdc;
+    --bg:#ffffff;
+    --bg-soft:#f4f4f4;
+    --bg-soft-2:#ececec;
+    --danger:#b3261e;
+    --ok:#1f7a3a;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.03);
+    --shadow:0 8px 24px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    font-family:'Plus Jakarta Sans','Manrope',system-ui,-apple-system,sans-serif;
+    color:var(--text);background:var(--bg-soft);
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  input,select,textarea{font:inherit;color:inherit}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:12px 20px;border-radius:6px;
+    font-weight:700;font-size:13.5px;letter-spacing:.04em;
+    text-transform:uppercase;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .btn-primary{background:var(--ink);color:#fff}
+  .btn-primary:hover{background:#000;transform:translateY(-1px)}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:#fff}
+  .btn-danger{background:#fff;color:var(--danger);border:1.5px solid var(--danger)}
+  .btn-danger:hover{background:var(--danger);color:#fff}
+  .btn-sm{padding:8px 14px;font-size:12px}
+
+  /* ───────── LOGIN ───────── */
+  .login-wrap{
+    min-height:100vh;display:grid;place-items:center;
+    background:
+      radial-gradient(120% 60% at 50% 0%, rgba(255,255,255,.6), transparent 60%),
+      linear-gradient(180deg, #f6f6f6 0%, #ececec 100%);
+    padding:32px 20px;
+  }
+  .login-card{
+    width:100%;max-width:420px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:10px;box-shadow:var(--shadow);
+    padding:36px 32px 32px;
+    text-align:center;
+  }
+  .login-card .brand{display:flex;justify-content:center;margin-bottom:14px}
+  .login-card .brand img{height:80px;width:auto;display:block}
+  .login-card h1{
+    font-family:'Manrope',sans-serif;
+    font-size:22px;font-weight:800;color:var(--ink);
+    margin:8px 0 4px;letter-spacing:-.01em;
+  }
+  .login-card .sub{
+    color:var(--muted);font-size:13.5px;margin:0 0 22px;
+  }
+  .field{display:grid;gap:6px;text-align:left;margin-bottom:14px}
+  .field label{
+    font-size:11.5px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink);
+  }
+  .field input, .field select, .field textarea{
+    padding:12px 14px;border:1.5px solid var(--line-2);
+    border-radius:6px;background:#fff;
+    font-size:14.5px;outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    border-color:var(--ink);
+    box-shadow:0 0 0 3px rgba(0,0,0,.06);
+  }
+  .field textarea{min-height:90px;resize:vertical;font-family:inherit}
+  .login-card .btn-primary{width:100%;justify-content:center;margin-top:6px}
+  .login-error{
+    background:#fdecec;color:var(--danger);
+    border:1px solid #f5c2c0;border-radius:6px;
+    padding:10px 12px;font-size:13px;margin-bottom:12px;
+    display:none;text-align:left;
+  }
+  .login-error.show{display:block}
+  .login-hint{
+    font-size:11.5px;color:var(--muted);margin-top:18px;
+    border-top:1px solid var(--line);padding-top:14px;
+  }
+  .login-hint code{
+    background:var(--bg-soft);padding:2px 6px;border-radius:4px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+  }
+
+  /* ───────── ADMIN SHELL ───────── */
+  .admin-shell{display:none}
+  body.authed .login-wrap{display:none}
+  body.authed .admin-shell{display:block}
+
+  .admin-header{
+    background:#fff;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:50;
+  }
+  .admin-header-inner{
+    max-width:1200px;margin:0 auto;padding:14px 32px;
+    display:flex;align-items:center;gap:24px;
+  }
+  .admin-header .brand img{height:56px;width:auto;display:block}
+  .admin-header .badge{
+    margin-left:6px;
+    font-size:11px;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line-2);padding:4px 10px;border-radius:99px;
+  }
+  .admin-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+  .admin-actions a.view-site{
+    font-size:13px;font-weight:600;color:var(--muted);
+  }
+  .admin-actions a.view-site:hover{color:var(--ink)}
+
+  main{
+    max-width:1200px;margin:0 auto;padding:36px 32px 80px;
+    display:grid;grid-template-columns:1fr 1.3fr;gap:28px;
+    align-items:start;
+  }
+
+  .panel{
+    background:#fff;border:1px solid var(--line);
+    border-radius:10px;box-shadow:var(--shadow-sm);
+    padding:26px 26px 24px;
+  }
+  .panel h2{
+    font-family:'Manrope',sans-serif;
+    font-size:18px;font-weight:800;color:var(--ink);
+    margin:0 0 4px;letter-spacing:-.005em;
+  }
+  .panel .panel-sub{
+    font-size:13px;color:var(--muted);margin:0 0 20px;
+  }
+  .panel-head{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+    margin-bottom:20px;
+  }
+  .panel-head h2{margin-bottom:2px}
+  .panel-head .panel-sub{margin:0}
+
+  /* form grid */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-grid .full{grid-column:1 / -1}
+  .form-actions{
+    display:flex;gap:10px;justify-content:flex-end;margin-top:18px;
+    flex-wrap:wrap;
+  }
+  .toast{
+    margin-top:14px;padding:10px 12px;border-radius:6px;
+    font-size:13px;display:none;
+  }
+  .toast.ok{background:#e8f5ec;color:var(--ok);border:1px solid #b9e0c4;display:block}
+  .toast.err{background:#fdecec;color:var(--danger);border:1px solid #f5c2c0;display:block}
+
+  /* file dropzone */
+  .drop{
+    border:1.5px dashed var(--line-2);border-radius:8px;
+    padding:18px;text-align:center;background:var(--bg-soft);
+    transition:border-color .15s ease, background .15s ease;
+    cursor:pointer;
+  }
+  .drop:hover, .drop.drag{border-color:var(--ink);background:#fff}
+  .drop input[type=file]{display:none}
+  .drop .hint{font-size:13px;color:var(--muted)}
+  .drop .hint b{color:var(--ink)}
+  .preview{
+    margin-top:12px;display:none;
+    grid-template-columns:repeat(4,1fr);gap:8px;
+  }
+  .preview.show{display:grid}
+  .preview .pv-item{
+    position:relative;aspect-ratio:4/3;
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;
+    background:#000;
+  }
+  .preview .pv-item.cover::after{
+    content:"Hoofdfoto";position:absolute;left:6px;bottom:6px;
+    background:rgba(10,10,10,.85);color:#fff;
+    font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 7px;border-radius:99px;
+  }
+  .preview .pv-item img{width:100%;height:100%;object-fit:cover;display:block}
+  .preview .pv-rm{
+    position:absolute;top:6px;right:6px;
+    width:24px;height:24px;border-radius:99px;
+    background:rgba(10,10,10,.85);color:#fff;
+    display:grid;place-items:center;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .preview .pv-rm:hover{background:var(--danger,#b3261e)}
+  @media (max-width: 560px){
+    .preview{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* listing */
+  .list-empty{
+    border:1px dashed var(--line-2);border-radius:8px;
+    padding:32px 20px;text-align:center;color:var(--muted);
+    font-size:14px;background:var(--bg-soft);
+  }
+  .list{display:grid;gap:12px}
+  .row{
+    display:grid;grid-template-columns:90px 1fr auto;gap:14px;
+    align-items:center;
+    border:1px solid var(--line);border-radius:8px;
+    padding:10px;background:#fff;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .row:hover{box-shadow:var(--shadow-sm)}
+  .row .thumb{
+    width:90px;height:68px;border-radius:6px;overflow:hidden;
+    background:#1a1a1a;flex:0 0 auto;
+  }
+  .row .thumb img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%)}
+  .row .info h3{
+    font-family:'Manrope',sans-serif;
+    font-size:15px;font-weight:700;color:var(--ink);
+    margin:0 0 2px;
+  }
+  .row .info .sub{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+  .row .info .meta{
+    font-size:12px;color:var(--text);
+    display:flex;flex-wrap:wrap;gap:10px;
+  }
+  .row .info .meta b{font-weight:700;color:var(--ink)}
+  .row .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+  @media (max-width: 960px){
+    main{grid-template-columns:1fr}
+    .form-grid{grid-template-columns:1fr}
+  }
+  @media (max-width: 560px){
+    main{padding:24px 18px 60px}
+    .row{grid-template-columns:72px 1fr;grid-template-rows:auto auto}
+    .row .actions{grid-column:1 / -1;justify-content:flex-end}
+    .row .thumb{width:72px;height:54px}
+    .admin-header-inner{padding:12px 18px}
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+</head>
+<body>
+
+<!-- ───────── LOGIN ───────── -->
+<div class="login-wrap" id="loginWrap">
+  <form class="login-card" id="loginForm" autocomplete="off">
+    <a class="brand" href="index.html" aria-label="Autobedrijf Kaya home">
+      <img src="assets/logo-cropped.png" alt="Autobedrijf Kaya" />
+    </a>
+    <h1>Admin login</h1>
+    <p class="sub">Log in om auto's aan het aanbod toe te voegen.</p>
+
+    <div class="login-error" id="loginErr">Onjuiste gebruikersnaam of wachtwoord.</div>
+
+    <div class="field">
+      <label for="user">E-mailadres</label>
+      <input type="email" id="user" name="user" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="pass">Wachtwoord</label>
+      <input type="password" id="pass" name="pass" autocomplete="current-password" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      Inloggen
+      <span style="width:18px;height:18px;border-radius:99px;background:rgba(255,255,255,.16);display:grid;place-items:center">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+    </button>
+
+    <div class="login-hint">
+      Log in met het e-mailadres en wachtwoord dat in Supabase is ingesteld.
+    </div>
+  </form>
+</div>
+
+<!-- ───────── ADMIN SHELL ───────── -->
+<div class="admin-shell" id="adminShell">
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <a class="brand" href="index.html" aria-label="Autobedrijf Kaya home">
+        <img src="assets/logo-cropped.png" alt="Autobedrijf Kaya" />
+      </a>
+      <span class="badge">Admin</span>
+      <div class="admin-actions">
+        <a class="view-site" href="index.html" target="_blank" rel="noopener">↗ Bekijk website</a>
+        <button class="btn btn-ghost btn-sm" id="logoutBtn">Uitloggen</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Form panel -->
+    <section class="panel">
+      <h2 id="formTitle">Nieuwe auto toevoegen</h2>
+      <p class="panel-sub" id="formSub">Vul de gegevens in. Toegevoegde auto's verschijnen direct op de website.</p>
+
+      <form id="carForm" autocomplete="off">
+        <input type="hidden" id="carId" />
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="merk">Merk *</label>
+            <input type="text" id="merk" required placeholder="bv. Audi" />
+          </div>
+          <div class="field">
+            <label for="model">Model *</label>
+            <input type="text" id="model" required placeholder="bv. A3" />
+          </div>
+
+          <div class="field full">
+            <label for="uitvoering">Uitvoering</label>
+            <input type="text" id="uitvoering" placeholder="bv. Sportback 1.5 TFSI Sport" />
+          </div>
+
+          <div class="field">
+            <label for="prijs">Prijs (€) *</label>
+            <input type="number" id="prijs" min="0" step="50" required placeholder="21950" />
+          </div>
+          <div class="field">
+            <label for="jaar">Bouwjaar *</label>
+            <input type="number" id="jaar" min="1980" max="2030" required placeholder="2020" />
+          </div>
+
+          <div class="field">
+            <label for="brandstof">Brandstof *</label>
+            <select id="brandstof" required>
+              <option value="">Kies...</option>
+              <option>Benzine</option>
+              <option>Diesel</option>
+              <option>Hybride</option>
+              <option>Elektrisch</option>
+              <option>LPG</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="km">Kilometerstand *</label>
+            <input type="number" id="km" min="0" step="100" required placeholder="78000" />
+          </div>
+
+          <div class="field">
+            <label for="transmissie">Transmissie</label>
+            <select id="transmissie">
+              <option value="">Niet opgegeven</option>
+              <option>Handgeschakeld</option>
+              <option>Automaat</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="kleur">Kleur</label>
+            <input type="text" id="kleur" placeholder="bv. Phantomzwart" />
+          </div>
+
+          <div class="field full">
+            <label for="omschrijving">Omschrijving</label>
+            <textarea id="omschrijving" placeholder="Optionele extra informatie over de auto..."></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Foto *</label>
+            <label class="drop" id="drop">
+              <input type="file" id="foto" accept="image/*" multiple />
+              <div class="hint"><b>Klik om te uploaden</b> of sleep afbeeldingen hierheen<br/>U kunt meerdere foto's toevoegen — JPG, PNG of WebP, max 4 MB per foto</div>
+            </label>
+            <div class="preview" id="preview"></div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="resetBtn">Formulier wissen</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            Auto toevoegen
+            <span style="width:18px;height:18px;border-radius:99px;background:rgba(255,255,255,.16);display:grid;place-items:center">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="toast" id="toast"></div>
+      </form>
+    </section>
+
+    <!-- Listing panel -->
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Aanbod beheren</h2>
+          <p class="panel-sub" id="countLabel">0 auto's in het aanbod</p>
+        </div>
+      </div>
+
+      <div id="listEmpty" class="list-empty">
+        Nog geen auto's toegevoegd.<br/>Voeg uw eerste auto toe via het formulier.
+      </div>
+      <div class="list" id="list"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ───────── Supabase helpers ───────── */
+const CARS_TABLE = 'cars';
+const PHOTOS_BUCKET = 'car-photos';
+
+async function loadCars(){
+  const { data, error } = await sb.from(CARS_TABLE).select('*').order('created_at', { ascending: false });
+  if(error){ console.error('loadCars', error); return []; }
+  return (data || []).map(r => ({
+    id: r.id,
+    merk: r.merk, model: r.model, uitvoering: r.uitvoering || '',
+    prijs: r.prijs, jaar: r.jaar, brandstof: r.brandstof || '',
+    km: r.km, transmissie: r.transmissie || '', kleur: r.kleur || '',
+    omschrijving: r.omschrijving || '',
+    images: Array.isArray(r.images) ? r.images : [],
+    createdAt: r.created_at ? new Date(r.created_at).getTime() : Date.now(),
+  }));
+}
+
+async function upsertCar(row){
+  const { error } = await sb.from(CARS_TABLE).upsert(row).select();
+  if(error) throw error;
+}
+async function deleteCarRow(id){
+  const { error } = await sb.from(CARS_TABLE).delete().eq('id', id);
+  if(error) throw error;
+}
+
+/* Compressie + upload van foto naar Storage. Geeft publieke URL terug. */
+async function compressImage(file, maxW = 1600, quality = 0.82){
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, maxW / bitmap.width);
+  const w = Math.round(bitmap.width * scale);
+  const h = Math.round(bitmap.height * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+  return await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+}
+
+async function uploadPhoto(file){
+  const blob = await compressImage(file);
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+  const { error } = await sb.storage.from(PHOTOS_BUCKET).upload(path, blob, { contentType: 'image/jpeg' });
+  if(error) throw error;
+  const { data } = sb.storage.from(PHOTOS_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+function uid(){
+  return crypto.randomUUID ? crypto.randomUUID() : 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+}
+
+/* ───────── Login ───────── */
+const listEl    = document.getElementById('list');
+const emptyEl   = document.getElementById('listEmpty');
+const countEl   = document.getElementById('countLabel');
+
+const loginForm = document.getElementById('loginForm');
+const loginErr  = document.getElementById('loginErr');
+
+function setAuthed(v){
+  if(v){
+    document.body.classList.add('authed');
+    renderList();
+  } else {
+    document.body.classList.remove('authed');
+  }
+}
+
+/* Controleer bestaande sessie bij laden van de pagina */
+sb.auth.getSession().then(({ data }) => {
+  if(data.session) setAuthed(true);
+});
+sb.auth.onAuthStateChange((_evt, session) => {
+  setAuthed(!!session);
+});
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('user').value.trim();
+  const password = document.getElementById('pass').value;
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if(error){
+    loginErr.textContent = 'Inloggen mislukt — controleer e-mail en wachtwoord.';
+    loginErr.classList.add('show');
+  } else {
+    loginErr.classList.remove('show');
+    document.getElementById('pass').value = '';
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await sb.auth.signOut();
+});
+
+/* ───────── Form ───────── */
+const carForm    = document.getElementById('carForm');
+const formTitle  = document.getElementById('formTitle');
+const formSub    = document.getElementById('formSub');
+const submitBtn  = document.getElementById('submitBtn');
+const fotoInput  = document.getElementById('foto');
+const drop       = document.getElementById('drop');
+const preview    = document.getElementById('preview');
+const toast      = document.getElementById('toast');
+
+let currentImages = [];
+
+function showToast(msg, kind){
+  toast.textContent = msg;
+  toast.className = 'toast ' + (kind || 'ok');
+  setTimeout(() => { toast.className = 'toast'; }, 3500);
+}
+
+function readFileAsDataUrl(file){
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+function renderPreview(){
+  if(currentImages.length === 0){
+    preview.classList.remove('show');
+    preview.innerHTML = '';
+    return;
+  }
+  preview.classList.add('show');
+  preview.innerHTML = currentImages.map((it, i) => {
+    const src = it.type === 'new' ? it.preview : it.url;
+    return `
+    <div class="pv-item${i===0?' cover':''}">
+      <img src="${src}" alt="" />
+      <button type="button" class="pv-rm" data-rm="${i}" aria-label="Verwijder foto">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  `;
+  }).join('');
+}
+preview.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-rm]');
+  if(!btn) return;
+  const i = Number(btn.getAttribute('data-rm'));
+  currentImages.splice(i, 1);
+  renderPreview();
+});
+
+async function handleFiles(files){
+  for(const file of files){
+    if(!file.type.startsWith('image/')){
+      showToast(`"${file.name}" is geen afbeelding.`, 'err'); continue;
+    }
+    if(file.size > 10 * 1024 * 1024){
+      showToast(`"${file.name}" is te groot (max 10 MB).`, 'err'); continue;
+    }
+    const preview = await readFileAsDataUrl(file);
+    currentImages.push({ type: 'new', file, preview });
+  }
+  renderPreview();
+}
+
+fotoInput.addEventListener('change', e => { handleFiles(Array.from(e.target.files || [])); fotoInput.value=''; });
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add('drag');
+}));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove('drag');
+}));
+drop.addEventListener('drop', e => {
+  const files = e.dataTransfer.files ? Array.from(e.dataTransfer.files) : [];
+  if(files.length) handleFiles(files);
+});
+
+function clearForm(){
+  carForm.reset();
+  document.getElementById('carId').value = '';
+  currentImages = [];
+  renderPreview();
+  formTitle.textContent = 'Nieuwe auto toevoegen';
+  formSub.textContent = "Vul de gegevens in. Toegevoegde auto's verschijnen direct op de website.";
+  submitBtn.firstChild.textContent = 'Auto toevoegen';
+}
+document.getElementById('resetBtn').addEventListener('click', clearForm);
+
+carForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const id = document.getElementById('carId').value;
+
+  if(currentImages.length === 0){
+    showToast('Voeg minstens één foto toe.', 'err'); return;
+  }
+
+  submitBtn.disabled = true;
+  const originalLabel = submitBtn.firstChild.textContent;
+  submitBtn.firstChild.textContent = 'Bezig met opslaan...';
+
+  try {
+    /* Upload nieuwe foto's; bestaande foto-URLs blijven staan. */
+    const finalUrls = [];
+    for(const it of currentImages){
+      if(it.type === 'existing'){ finalUrls.push(it.url); }
+      else {
+        const url = await uploadPhoto(it.file);
+        finalUrls.push(url);
+      }
+    }
+
+    const row = {
+      id: id || uid(),
+      merk: document.getElementById('merk').value.trim(),
+      model: document.getElementById('model').value.trim(),
+      uitvoering: document.getElementById('uitvoering').value.trim(),
+      prijs: Number(document.getElementById('prijs').value),
+      jaar: Number(document.getElementById('jaar').value),
+      brandstof: document.getElementById('brandstof').value,
+      km: Number(document.getElementById('km').value),
+      transmissie: document.getElementById('transmissie').value,
+      kleur: document.getElementById('kleur').value.trim(),
+      omschrijving: document.getElementById('omschrijving').value.trim(),
+      images: finalUrls,
+    };
+
+    await upsertCar(row);
+    showToast(id ? 'Auto bijgewerkt.' : 'Auto toegevoegd aan het aanbod.', 'ok');
+    clearForm();
+    await renderList();
+  } catch(err){
+    console.error(err);
+    showToast('Opslaan mislukt: ' + (err.message || err), 'err');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.firstChild.textContent = originalLabel;
+  }
+});
+
+/* ───────── List ───────── */
+
+function fmtPrice(n){
+  if(!n && n !== 0) return '';
+  return '€ ' + n.toLocaleString('nl-NL') + ',-';
+}
+function fmtKm(n){
+  if(!n && n !== 0) return '';
+  return n.toLocaleString('nl-NL') + ' km';
+}
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function renderList(){
+  const cars = await loadCars();
+  countEl.textContent = cars.length + (cars.length === 1 ? " auto in het aanbod" : " auto's in het aanbod");
+  if(cars.length === 0){
+    emptyEl.style.display = '';
+    listEl.innerHTML = '';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  listEl.innerHTML = cars.map(c => {
+    const cover = (c.images && c.images[0]) || '';
+    const photoCount = (c.images && c.images.length) || 0;
+    return `
+    <div class="row">
+      <div class="thumb">${cover ? `<img src="${cover}" alt="">` : ''}</div>
+      <div class="info">
+        <h3>${escapeHtml(c.merk)} ${escapeHtml(c.model)}</h3>
+        <p class="sub">${escapeHtml(c.uitvoering || '')}</p>
+        <div class="meta">
+          <span><b>${fmtPrice(c.prijs)}</b></span>
+          <span>${escapeHtml(String(c.jaar||''))}</span>
+          <span>${escapeHtml(c.brandstof||'')}</span>
+          <span>${fmtKm(c.km)}</span>
+          <span>${photoCount} ${photoCount === 1 ? "foto" : "foto's"}</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost btn-sm" data-edit="${c.id}">Bewerken</button>
+        <button class="btn btn-danger btn-sm" data-del="${c.id}">Verwijderen</button>
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+
+listEl.addEventListener('click', (e) => {
+  const editId = e.target.closest('[data-edit]')?.getAttribute('data-edit');
+  const delId  = e.target.closest('[data-del]')?.getAttribute('data-del');
+  if(editId) return startEdit(editId);
+  if(delId)  return deleteCar(delId);
+});
+
+async function startEdit(id){
+  const cars = await loadCars();
+  const car = cars.find(c => c.id === id);
+  if(!car) return;
+  document.getElementById('carId').value = car.id;
+  document.getElementById('merk').value = car.merk || '';
+  document.getElementById('model').value = car.model || '';
+  document.getElementById('uitvoering').value = car.uitvoering || '';
+  document.getElementById('prijs').value = car.prijs ?? '';
+  document.getElementById('jaar').value = car.jaar ?? '';
+  document.getElementById('brandstof').value = car.brandstof || '';
+  document.getElementById('km').value = car.km ?? '';
+  document.getElementById('transmissie').value = car.transmissie || '';
+  document.getElementById('kleur').value = car.kleur || '';
+  document.getElementById('omschrijving').value = car.omschrijving || '';
+  currentImages = (car.images && car.images.length)
+    ? car.images.map(url => ({ type: 'existing', url }))
+    : [];
+  renderPreview();
+  formTitle.textContent = 'Auto bewerken';
+  formSub.textContent = 'Pas de gegevens aan en sla op om de wijzigingen door te voeren.';
+  submitBtn.firstChild.textContent = 'Wijzigingen opslaan';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteCar(id){
+  const cars = await loadCars();
+  const car = cars.find(c => c.id === id);
+  if(!car) return;
+  if(!confirm(`"${car.merk} ${car.model}" verwijderen uit het aanbod?`)) return;
+  try {
+    await deleteCarRow(id);
+    await renderList();
+    showToast('Auto verwijderd.', 'ok');
+  } catch(err){
+    console.error(err);
+    showToast('Verwijderen mislukt: ' + (err.message || err), 'err');
+  }
+}
+
+renderList();
+</script>
+</body>
+</html>

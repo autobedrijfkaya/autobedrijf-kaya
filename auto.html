@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Auto — Autobedrijf Kaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --text:#1a1a1a;
+    --muted:#6b6b6b;
+    --line:#e6e6e6;
+    --line-2:#dcdcdc;
+    --bg:#ffffff;
+    --bg-soft:#f4f4f4;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.03);
+    --shadow:0 8px 24px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Plus Jakarta Sans','Manrope',system-ui,-apple-system,sans-serif;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+  .container{max-width:1200px;margin:0 auto;padding:0 32px}
+
+  /* ───────── Header ───────── */
+  .site-header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{display:flex;align-items:center;gap:32px;padding:14px 0}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:64px;width:auto;display:block}
+  nav.primary{margin-left:auto;display:flex;align-items:center;gap:34px}
+  nav.primary a{
+    font-size:14px;font-weight:600;letter-spacing:.04em;
+    color:var(--text);text-transform:uppercase;
+    padding:6px 0;position:relative;
+  }
+  nav.primary a:hover{color:var(--ink)}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:6px;
+    font-weight:700;font-size:14px;letter-spacing:.04em;
+    text-transform:uppercase;
+    transition:transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn-primary{background:var(--ink);color:#fff}
+  .btn-primary:hover{background:#000;transform:translateY(-1px)}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:#fff}
+  .btn .arrow{
+    width:22px;height:22px;border-radius:999px;
+    background:rgba(255,255,255,.16);
+    display:grid;place-items:center;
+  }
+
+  /* ───────── Detail ───────── */
+  .crumbs{
+    padding:18px 0 0;font-size:12.5px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+  .crumbs a:hover{color:var(--ink)}
+  .crumbs span{margin:0 8px}
+
+  .detail{padding:24px 0 48px}
+  .detail-grid{
+    display:grid;grid-template-columns:1.4fr 1fr;gap:36px;align-items:start;
+  }
+
+  /* gallery */
+  .gallery{display:grid;gap:10px}
+  .gallery-main{
+    aspect-ratio:4/3;background:#1a1a1a;
+    border-radius:10px;overflow:hidden;
+    border:1px solid var(--line);box-shadow:var(--shadow-sm);
+  }
+  .gallery-main img{width:100%;height:100%;object-fit:cover}
+  .gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .gallery-thumbs .thumb{
+    aspect-ratio:4/3;background:#1a1a1a;
+    border-radius:8px;overflow:hidden;cursor:pointer;
+    border:1px solid var(--line);opacity:.85;
+    transition:opacity .15s ease, transform .15s ease;
+  }
+  .gallery-thumbs .thumb:hover{opacity:1;transform:translateY(-2px)}
+  .gallery-thumbs .thumb.active{
+    opacity:1;border-color:var(--ink);box-shadow:0 0 0 2px rgba(0,0,0,.06);
+  }
+  .gallery-thumbs .thumb img{width:100%;height:100%;object-fit:cover}
+
+  /* summary card */
+  .summary{
+    background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:28px 28px 24px;box-shadow:var(--shadow-sm);position:sticky;top:100px;
+  }
+  .summary .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+  }
+  .summary h1{
+    font-family:'Manrope',sans-serif;
+    font-size:30px;font-weight:800;color:var(--ink);
+    letter-spacing:-.01em;margin:0 0 6px;
+  }
+  .summary .sub{
+    font-size:15px;color:var(--muted);margin:0 0 22px;
+  }
+  .summary .price-row{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:18px 0;margin:0 0 22px;
+  }
+  .summary .price{
+    font-family:'Manrope',sans-serif;
+    font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.01em;
+  }
+  .summary .price-label{
+    font-size:12px;font-weight:700;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .summary .ctas{display:grid;gap:10px}
+  .summary .ctas .btn{justify-content:center}
+
+  /* spec table */
+  .specs-block{
+    background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:28px 28px 22px;box-shadow:var(--shadow-sm);margin-top:24px;
+  }
+  .specs-block h2{
+    font-family:'Manrope',sans-serif;
+    font-size:18px;font-weight:800;color:var(--ink);
+    margin:0 0 16px;letter-spacing:-.005em;
+  }
+  .spec-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    border-top:1px solid var(--line);
+  }
+  .spec-grid .row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:13px 4px;border-bottom:1px solid var(--line);font-size:14px;
+  }
+  .spec-grid .row b{font-weight:600;color:var(--ink)}
+  .spec-grid .row span{color:var(--muted)}
+  .spec-grid .row:nth-child(odd){padding-right:24px}
+  .spec-grid .row:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}
+
+  .description{
+    background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:28px 28px 22px;box-shadow:var(--shadow-sm);margin-top:24px;
+  }
+  .description h2{
+    font-family:'Manrope',sans-serif;
+    font-size:18px;font-weight:800;color:var(--ink);
+    margin:0 0 12px;letter-spacing:-.005em;
+  }
+  .description p{
+    color:var(--text);font-size:14.5px;line-height:1.7;margin:0;
+    white-space:pre-wrap;
+  }
+
+  /* not found */
+  .notfound{
+    text-align:center;padding:80px 24px;
+  }
+  .notfound h1{
+    font-family:'Manrope',sans-serif;
+    font-size:36px;font-weight:800;color:var(--ink);margin:0 0 12px;
+  }
+  .notfound p{color:var(--muted);font-size:15px;margin:0 0 24px}
+
+  /* related */
+  .related{padding:48px 0 64px;background:var(--bg-soft);border-top:1px solid var(--line)}
+  .related h2{
+    font-family:'Manrope',sans-serif;
+    font-size:24px;font-weight:800;color:var(--ink);
+    margin:0 0 22px;letter-spacing:-.01em;
+  }
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .card{
+    background:#fff;border-radius:8px;overflow:hidden;
+    box-shadow:var(--shadow-sm);border:1px solid var(--line);
+    transition:transform .2s ease, box-shadow .2s ease;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .card-img{
+    aspect-ratio: 4/3;background:#1a1a1a;
+    overflow:hidden;
+  }
+  .card-img img{width:100%;height:100%;object-fit:cover}
+  .card-body{padding:16px 18px 4px}
+  .card h3{
+    font-family:'Manrope',sans-serif;
+    font-size:16px;font-weight:700;color:var(--ink);margin:0 0 4px;
+  }
+  .card .sub{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+  .card-foot{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 18px 16px;
+  }
+  .card .price{font-size:18px;font-weight:800;font-family:'Manrope',sans-serif;color:var(--ink)}
+
+  /* Footer */
+  footer{background:#fff;padding:48px 0 0;border-top:1px solid var(--line)}
+  .copy{
+    margin-top:36px;background:var(--ink);
+    color:rgba(255,255,255,.7);
+    padding:18px 0;font-size:13px;
+  }
+  .copy .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer-quick{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;
+    color:var(--muted);font-size:14px;
+  }
+  .footer-quick .brand img{height:60px}
+  .footer-quick a:hover{color:var(--ink)}
+
+  @media (max-width: 1000px){
+    nav.primary{display:none}
+    .detail-grid{grid-template-columns:1fr}
+    .summary{position:static}
+    .cards{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width: 560px){
+    .container{padding:0 20px}
+    .spec-grid{grid-template-columns:1fr}
+    .spec-grid .row:nth-child(even){padding-left:4px;border-left:0}
+    .cards{grid-template-columns:1fr}
+    .summary h1{font-size:24px}
+    .summary .price{font-size:28px}
+    .brand img{height:52px}
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js" defer></script>
+</head>
+<body>
+
+<!-- ───────── HEADER ───────── -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Autobedrijf Kaya home">
+      <img src="assets/logo-cropped.png" alt="Autobedrijf Kaya — Uw auto, onze zorg" />
+    </a>
+    <nav class="primary" aria-label="Hoofdnavigatie">
+      <a href="index.html">Home</a>
+      <a href="aanbod.html">Aanbod</a>
+      <a href="index.html#diensten">Diensten</a>
+      <a href="index.html#over">Over ons</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button type="button" data-contact-popup class="btn btn-primary" style="white-space:nowrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+      <span>Contact opnemen</span>
+    </button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="crumbs" id="crumbs">
+    <a href="index.html">Home</a><span>/</span><a href="aanbod.html">Aanbod</a><span>/</span><span id="crumbTitle">Auto</span>
+  </div>
+</div>
+
+<main id="main">
+  <!-- Filled by JS -->
+</main>
+
+<!-- ───────── RELATED ───────── -->
+<section class="related" id="related" style="display:none">
+  <div class="container">
+    <h2>Ook interessant</h2>
+    <div class="cards" id="relatedCards"></div>
+  </div>
+</section>
+
+<!-- ───────── FOOTER ───────── -->
+<footer>
+  <div class="container">
+    <div class="footer-quick">
+      <a class="brand" href="index.html">
+        <img src="assets/logo-cropped.png" alt="Autobedrijf Kaya" />
+      </a>
+      <div>Gildeweg 27B · 4383 NJ Vlissingen</div>
+      <div>06 81 00 43 51 · info@autobedrijfkaya.nl</div>
+      <div><a href="aanbod.html">Bekijk volledig aanbod →</a></div>
+    </div>
+  </div>
+  <div class="copy">
+    <div class="container">
+      <div>© 2026 Autobedrijf Kaya. Alle rechten voorbehouden.</div>
+      <div><a href="admin.html" style="color:rgba(255,255,255,.55)">Admin</a> · Uw auto, onze zorg.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function fmtPrice(n){ return '€ ' + Number(n||0).toLocaleString('nl-NL') + ',-'; }
+function fmtKm(n){ return Number(n||0).toLocaleString('nl-NL') + ' km'; }
+function esc(s){
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+(async function init(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+
+  /* Wacht tot supabase-config.js geladen is (defer) */
+  while(!window.kayaApi){ await new Promise(r => setTimeout(r, 30)); }
+  const all = await window.kayaApi.listCars();
+  const car = id ? all.find(c => String(c.id) === String(id)) : null;
+
+const main = document.getElementById('main');
+const crumbTitle = document.getElementById('crumbTitle');
+
+if(!car){
+  crumbTitle.textContent = 'Niet gevonden';
+  document.title = 'Auto niet gevonden — Autobedrijf Kaya';
+  main.innerHTML = `
+    <div class="container">
+      <div class="notfound">
+        <h1>Deze auto is niet meer beschikbaar</h1>
+        <p>De auto die u zoekt staat niet meer in ons aanbod, of het webadres is onjuist.</p>
+        <a href="aanbod.html" class="btn btn-primary">
+          Terug naar aanbod
+          <span class="arrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  `;
+} else {
+  const title = `${car.merk||''} ${car.model||''}`.trim();
+  document.title = `${title} — Autobedrijf Kaya`;
+  crumbTitle.textContent = title;
+
+  const subject = encodeURIComponent(`Interesse in ${title}`);
+  const body = encodeURIComponent(`Goedendag,\n\nIk heb interesse in de ${title}${car.uitvoering ? ' ' + car.uitvoering : ''} (${fmtPrice(car.prijs)}).\nKan ik meer informatie ontvangen of een proefrit inplannen?\n\nMet vriendelijke groet,\n`);
+
+  main.innerHTML = `
+    <section class="detail">
+      <div class="container detail-grid">
+        <div>
+          ${(() => {
+            const imgs = (car.images && car.images.length) ? car.images : (car.image ? [car.image] : []);
+            return `
+            <div class="gallery">
+              <div class="gallery-main">
+                ${imgs[0] ? `<img id="mainImg" src="${imgs[0]}" alt="${esc(title)}"/>` : ''}
+              </div>
+              ${imgs.length > 1 ? `
+              <div class="gallery-thumbs" id="galleryThumbs">
+                ${imgs.map((src, i) => `
+                  <button type="button" class="thumb${i===0?' active':''}" data-idx="${i}" aria-label="Foto ${i+1}">
+                    <img src="${src}" alt=""/>
+                  </button>
+                `).join('')}
+              </div>` : ''}
+            </div>`;
+          })()}
+
+          <section class="specs-block">
+            <h2>Specificaties</h2>
+            <div class="spec-grid">
+              <div class="row"><b>Bouwjaar</b><span>${esc(car.jaar || '—')}</span></div>
+              <div class="row"><b>Kilometerstand</b><span>${car.km != null ? fmtKm(car.km) : '—'}</span></div>
+              <div class="row"><b>Brandstof</b><span>${esc(car.brandstof || '—')}</span></div>
+              <div class="row"><b>Transmissie</b><span>${esc(car.transmissie || '—')}</span></div>
+              <div class="row"><b>Kleur</b><span>${esc(car.kleur || '—')}</span></div>
+              <div class="row"><b>Uitvoering</b><span>${esc(car.uitvoering || '—')}</span></div>
+            </div>
+          </section>
+
+          ${car.omschrijving ? `
+          <section class="description">
+            <h2>Omschrijving</h2>
+            <p>${esc(car.omschrijving)}</p>
+          </section>` : ''}
+        </div>
+
+        <aside class="summary">
+          <div class="eyebrow">${esc(car.merk || '')}</div>
+          <h1>${esc(title)}</h1>
+          <p class="sub">${esc(car.uitvoering || '')}</p>
+          <div class="price-row">
+            <span class="price-label">Vraagprijs</span>
+            <span class="price">${fmtPrice(car.prijs)}</span>
+          </div>
+          <div class="ctas">
+            <a class="btn btn-primary" href="mailto:info@autobedrijfkaya.nl?subject=${subject}&body=${body}">
+              Stuur een bericht
+              <span class="arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </a>
+            <a class="btn btn-ghost" href="tel:+31681004351">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+              Bel 06 81 00 43 51
+            </a>
+            <a class="btn btn-ghost" href="aanbod.html" style="padding:10px 14px;font-size:12.5px">← Terug naar aanbod</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  `;
+
+  /* Related cars: same brand or fuel, max 4, exclude current */
+  const related = all
+    .filter(c => c.id !== car.id)
+    .map(c => ({ c, score:
+      (c.merk === car.merk ? 2 : 0) +
+      (c.brandstof === car.brandstof ? 1 : 0)
+    }))
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 4)
+    .map(x => x.c);
+
+  if(related.length){
+    document.getElementById('related').style.display = '';
+    document.getElementById('relatedCards').innerHTML = related.map(c => `
+      <a class="card" href="auto.html?id=${encodeURIComponent(c.id)}">
+        <div class="card-img">${(() => { const cv = (c.images && c.images[0]) || c.image; return cv ? `<img src="${cv}" alt="${esc((c.merk||'') + ' ' + (c.model||''))}"/>` : ''; })()}</div>
+        <div class="card-body">
+          <h3>${esc((c.merk || '') + ' ' + (c.model || ''))}</h3>
+          <p class="sub">${esc(c.uitvoering || '')}</p>
+        </div>
+        <div class="card-foot">
+          <span class="price">${fmtPrice(c.prijs)}</span>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  /* Gallery thumbnail switching */
+  const thumbs = document.getElementById('galleryThumbs');
+  const mainImg = document.getElementById('mainImg');
+  if(thumbs && mainImg){
+    thumbs.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-idx]');
+      if(!btn) return;
+      const i = Number(btn.getAttribute('data-idx'));
+      const imgs = (car.images && car.images.length) ? car.images : (car.image ? [car.image] : []);
+      if(!imgs[i]) return;
+      mainImg.src = imgs[i];
+      thumbs.querySelectorAll('.thumb').forEach(t => t.classList.toggle('active', t === btn));
+    });
+  }
+}
+})();
+</script>
+
+<!-- ───────── Contact popup ───────── -->
+<div id="contactModal" class="cm-overlay" hidden>
+  <div class="cm-card" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <button type="button" class="cm-close" data-cm-close aria-label="Sluiten">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="cm-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+    </div>
+    <div class="cm-eyebrow">Direct contact</div>
+    <h3 id="cmTitle">Bel ons direct</h3>
+    <a class="cm-phone" href="tel:+31681004351">06 81 00 43 51</a>
+    <p class="cm-sub">We helpen u graag verder met al uw vragen over ons aanbod en onze diensten.</p>
+    <div class="cm-actions">
+      <a class="btn btn-primary" href="tel:+31681004351">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V21a1 1 0 0 1-1.09 1 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.21 4.09 1 1 0 0 1 4.2 3h4.09a1 1 0 0 1 1 .75 12.36 12.36 0 0 0 .67 2.7 1 1 0 0 1-.23 1L8.09 9.09a16 16 0 0 0 6 6l1.62-1.62a1 1 0 0 1 1-.23 12.36 12.36 0 0 0 2.7.67 1 1 0 0 1 .75 1Z"/></svg>
+        Bel nu
+      </a>
+      <a class="btn btn-ghost" href="https://wa.me/31681004351" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.5A8.5 8.5 0 1 1 7.5 19.4L3 21Z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+<style>
+  .cm-overlay{
+    position:fixed;inset:0;z-index:1000;
+    background:rgba(10,10,10,.62);
+    backdrop-filter:blur(4px);
+    display:grid;place-items:center;
+    padding:24px;
+    animation:cmFade .18s ease-out;
+  }
+  .cm-overlay[hidden]{display:none}
+  @keyframes cmFade{ from{opacity:0} to{opacity:1} }
+  .cm-card{
+    background:#fff;border-radius:12px;
+    max-width:420px;width:100%;
+    padding:36px 32px 28px;
+    text-align:center;position:relative;
+    box-shadow:0 24px 60px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.1);
+    animation:cmPop .22s cubic-bezier(.2,.7,.2,1);
+  }
+  @keyframes cmPop{ from{opacity:0;transform:translateY(12px) scale(.96)} to{opacity:1;transform:none} }
+  .cm-close{
+    position:absolute;top:14px;right:14px;
+    width:34px;height:34px;border-radius:99px;
+    background:#f4f4f4;color:#0a0a0a;
+    display:grid;place-items:center;
+    transition:background .15s ease, color .15s ease;
+  }
+  .cm-close:hover{background:#0a0a0a;color:#fff}
+  .cm-icon{
+    width:60px;height:60px;border-radius:99px;
+    background:#f4f4f4;color:#0a0a0a;
+    display:grid;place-items:center;
+    margin:0 auto 14px;
+  }
+  .cm-eyebrow{
+    font-size:11.5px;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;color:#6b6b6b;margin-bottom:6px;
+  }
+  .cm-card h3{
+    font-family:'Manrope',sans-serif;
+    font-size:22px;font-weight:800;color:#0a0a0a;
+    margin:0 0 14px;letter-spacing:-.01em;
+  }
+  .cm-phone{
+    display:inline-block;
+    font-family:'Manrope',sans-serif;
+    font-size:32px;font-weight:800;color:#0a0a0a;
+    letter-spacing:-.01em;
+    padding:8px 18px;border-radius:8px;
+    background:#f4f4f4;
+    transition:background .15s ease;
+    margin-bottom:14px;
+  }
+  .cm-phone:hover{background:#ececec}
+  .cm-sub{
+    color:#6b6b6b;font-size:13.5px;line-height:1.55;
+    margin:0 0 22px;
+  }
+  .cm-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .cm-actions .btn{padding:12px 18px;font-size:13px}
+  @media (max-width:480px){
+    .cm-card{padding:30px 22px 24px}
+    .cm-phone{font-size:26px}
+    .cm-card h3{font-size:19px}
+  }
+</style>
+<script>
+(function(){
+  const modal = document.getElementById('contactModal');
+  if(!modal) return;
+  function open(){ modal.hidden = false; document.body.style.overflow='hidden'; }
+  function close(){ modal.hidden = true; document.body.style.overflow=''; }
+  document.addEventListener('click', (e) => {
+    if(e.target.closest('[data-contact-popup]')){ e.preventDefault(); open(); return; }
+    if(e.target === modal || e.target.closest('[data-cm-close]')){ close(); }
+  });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && !modal.hidden) close(); });
+})();
+</script>
+
+</body>
+</html>
