@@ -407,7 +407,7 @@
 <script>
 /* ───────── Data (Supabase) ───────── */
 async function loadCars(){
-  if(!window.kayaApi) return [];
+  while(!window.kayaApi){ await new Promise(r => setTimeout(r, 30)); }
   return await window.kayaApi.listCars();
 }
 
